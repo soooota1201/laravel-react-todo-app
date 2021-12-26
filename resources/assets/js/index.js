@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import { HashRouter, Switch, Route, Link } from 'react-router-dom';
 import TaskEdit from './components/TaskEdit';
 
 if (document.getElementById('root')) {
     ReactDOM.render(
-        <BrowserRouter>
+        <HashRouter>
             <div>
                 <Switch>
-                    <Route exact path="/:id/edit" component={TaskEdit} />
-                    <App />
+                    <Route exact path="/">
+                        <App />
+                    </Route>
+                    <Route exact path="/:id/edit" component={TaskEdit} >
+
+                    </Route>
                 </Switch>
             </div>
-        </BrowserRouter>
+        </HashRouter>
         , document.getElementById('root'));
 }

@@ -39146,7 +39146,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 if (document.getElementById('root')) {
     __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_3_react_router_dom__["a" /* BrowserRouter */],
+        __WEBPACK_IMPORTED_MODULE_3_react_router_dom__["a" /* HashRouter */],
         null,
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
@@ -39154,8 +39154,12 @@ if (document.getElementById('root')) {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_3_react_router_dom__["d" /* Switch */],
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["c" /* Route */], { exact: true, path: '/:id/edit', component: __WEBPACK_IMPORTED_MODULE_4__components_TaskEdit__["a" /* default */] }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_App__["a" /* default */], null)
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_3_react_router_dom__["c" /* Route */],
+                    { exact: true, path: '/' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__components_App__["a" /* default */], null)
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_router_dom__["c" /* Route */], { exact: true, path: '/:id/edit', component: __WEBPACK_IMPORTED_MODULE_4__components_TaskEdit__["a" /* default */] })
             )
         )
     ), document.getElementById('root'));
@@ -67535,7 +67539,7 @@ var App = function (_Component) {
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
                                 { className: 'card-header' },
-                                'Example Component'
+                                'Task Create'
                             ),
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                                 'div',
@@ -67580,8 +67584,8 @@ var App = function (_Component) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BrowserRouter; });
-/* unused harmony export HashRouter */
+/* unused harmony export BrowserRouter */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HashRouter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Link; });
 /* unused harmony export NavLink */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react_router__ = __webpack_require__(21);
@@ -69634,10 +69638,11 @@ var TaskEdit = function (_Component) {
         var _this = _possibleConstructorReturn(this, (TaskEdit.__proto__ || Object.getPrototypeOf(TaskEdit)).call(this, props));
 
         _this.state = {
-            name: ''
+            name: '',
+            task: ''
         };
-        _this.getTask = _this.getTask.bind(_this);
-        _this.updateTask = _this.updateTask.bind(_this);
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
 
@@ -69649,27 +69654,28 @@ var TaskEdit = function (_Component) {
             });
         }
     }, {
-        key: 'getTask',
-        value: function getTask(id) {
+        key: 'handleSubmit',
+        value: function handleSubmit(e) {
             var _this2 = this;
 
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('tasks/' + id + '/edit').then(function (response) {
-                _this2.setState({
-                    name: response.data.task
-                });
+            e.preventDefault();
+            console.log(this.props.match.params.id);
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put('/tasks/' + this.props.match.params.id, {
+                name: this.state.name,
+                task: this.state.task
+            }).then(function (response) {
+                _this2.props.history.push('/');
             });
         }
     }, {
-        key: 'updateTask',
-        value: function updateTask(id) {
+        key: 'getTask',
+        value: function getTask() {
             var _this3 = this;
 
-            e.preventDefault();
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put('tasks/' + id, {
-                name: this.state.name
-            }).then(function (response) {
-                _this3.setState({
-                    name: response.data.name
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get('/tasks/' + this.props.match.params.id + '/edit').then(function (response) {
+                return _this3.setState({
+                    task: response.data.task,
+                    name: response.data.task.name
                 });
             });
         }
@@ -69683,26 +69689,44 @@ var TaskEdit = function (_Component) {
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                 'div',
-                null,
+                { className: 'container' },
                 __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                     'div',
-                    { className: 'container' },
+                    { className: 'row justify-content-center' },
                     __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                         'div',
-                        { className: 'row justify-content-center' },
+                        { className: 'col-md-8' },
                         __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
                             'div',
-                            { className: 'col-md-8' },
+                            { className: 'card' },
                             __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
-                                'form',
-                                { onSubmit: this.updateTask },
-                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('textarea', {
-                                    onChange: this.handleChange,
-                                    value: this.state.name,
-                                    className: 'form-control',
-                                    rows: '5',
-                                    maxLength: '255',
-                                    required: true })
+                                'div',
+                                { className: 'card-header' },
+                                'Edit Task'
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                'div',
+                                { className: 'card-body' },
+                                __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                    'form',
+                                    { onSubmit: this.handleSubmit },
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                        'div',
+                                        { className: 'form-group' },
+                                        __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement('textarea', {
+                                            onChange: this.handleChange,
+                                            value: this.state.name,
+                                            className: 'form-control',
+                                            rows: '5',
+                                            maxLength: '255',
+                                            placeholder: 'Create a new task', required: true })
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_1_react___default.a.createElement(
+                                        'button',
+                                        { type: 'submit', className: 'btn btn-primary' },
+                                        'Edit Task'
+                                    )
+                                )
                             )
                         )
                     )
