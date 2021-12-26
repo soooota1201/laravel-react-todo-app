@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class App extends Component {
     constructor(props) {
@@ -36,7 +37,9 @@ class App extends Component {
             <div key={task.id} className='media'>
                 <div className='media-body'>
                     <div>
-                        {task.name} <button onClick={() => this.handleDelete(task.id)} className='btn btn-sm btn-warning float-right'>Delete</button>
+                        {task.name}
+                        <Link to={`/${task.id}/edit`} className='btn btn-sm btn-success float-right'>Update</Link>
+                        <button onClick={() => this.handleDelete(task.id)} className='btn btn-sm btn-warning float-right'>Delete</button>
                     </div>
                 </div>
             </div>
